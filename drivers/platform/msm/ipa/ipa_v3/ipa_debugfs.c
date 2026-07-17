@@ -20,6 +20,8 @@
 #include "ipahal/ipahal_nat.h"
 #include "ipa_odl.h"
 
+#define copy_from_user(dest, src, count) __copy_from_user(dest, src, count)
+
 #define IPA_MAX_ENTRY_STRING_LEN 500
 #define IPA_MAX_MSG_LEN 4096
 #define IPA_DBG_MAX_RULE_IN_TBL 128

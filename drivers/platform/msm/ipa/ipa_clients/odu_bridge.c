@@ -29,6 +29,8 @@
 #include "../ipa_common_i.h"
 #include "../ipa_v3/ipa_pm.h"
 
+#define copy_from_user(dest, src, count) __copy_from_user(dest, src, count)
+
 #define ODU_BRIDGE_DRV_NAME "odu_ipa_bridge"
 
 #define ODU_BRIDGE_DBG(fmt, args...) \

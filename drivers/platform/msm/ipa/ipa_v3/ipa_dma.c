@@ -22,6 +22,8 @@
 #include <linux/dmapool.h>
 #include "ipa_i.h"
 
+#define copy_from_user(dest, src, count) __copy_from_user(dest, src, count)
+
 #define IPA_DMA_POLLING_MIN_SLEEP_RX 1010
 #define IPA_DMA_POLLING_MAX_SLEEP_RX 1050
 #define IPA_DMA_SYS_DESC_MAX_FIFO_SZ 0x7FF8

@@ -81,7 +81,8 @@ static long cam_sensor_subdev_ioctl(struct v4l2_subdev *sd,
 		if (rc < 0) {
 			CAM_ERR(CAM_SENSOR, "ftm power up failed!");
 			/* add by fangyan @ Camera.Drv 20190713,for bugid : 2152434  */
-			for(int i = 0 ;i < 5 ; i++) {
+			int i;
+			for(i = 0 ; i < 5 ; i++) {
 				CAM_ERR(CAM_SENSOR, "ftm power up loop!");
 				rc = cam_sensor_power_up(s_ctrl);
 				if(rc >= 0) {

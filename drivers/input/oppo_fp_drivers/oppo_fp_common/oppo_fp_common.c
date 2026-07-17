@@ -63,6 +63,18 @@
 #include <linux/string.h>
 #include "../include/oppo_fp_common.h"
 
+#define CONFIG_OPPO_FINGERPRINT_PROJCT 19781
+
+struct fp_underscreen_info; /* Forward declaration just in case */
+
+int silfp_opticalfp_irq_handler(struct fp_underscreen_info* tp_info) {
+	return 0;
+}
+
+int gf_opticalfp_irq_handler(struct fp_underscreen_info* tp_info) {
+	return 0;
+}
+
 #define CHIP_PRIMAX     "primax"
 #define CHIP_CT         "CT"
 #define CHIP_OFILM      "ofilm"

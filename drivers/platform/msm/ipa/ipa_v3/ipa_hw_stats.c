@@ -17,6 +17,8 @@
 #include "ipahal/ipahal.h"
 #include "ipahal/ipahal_hw_stats.h"
 
+#define copy_from_user(dest, src, count) __copy_from_user(dest, src, count)
+
 #define IPA_CLIENT_BIT_32(client) \
 	((ipa3_get_ep_mapping(client) >= 0 && \
 		ipa3_get_ep_mapping(client) < IPA_STATS_MAX_PIPE_BIT) ? \

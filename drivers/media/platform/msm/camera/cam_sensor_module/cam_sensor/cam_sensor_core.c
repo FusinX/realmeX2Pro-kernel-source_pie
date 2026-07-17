@@ -1428,7 +1428,8 @@ static int RamWriteByte(struct cam_sensor_ctrl_t *o_ctrl,
 		return -EINVAL;
 	}
 
-	for(int i = 0; i < retry; i++)
+	int i;
+	for(i = 0; i < retry; i++)
 	{
 		rc = camera_io_dev_write(&(o_ctrl->io_master_info), &i2c_write);
 		if (rc < 0) {

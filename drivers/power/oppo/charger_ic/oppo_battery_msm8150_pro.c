@@ -14117,7 +14117,7 @@ static int smb5_show_charger_status(struct smb5 *chip)
 #ifdef VENDOR_EDIT
 /*lizhijie@BSP.Basic.CHG 2019/09/03 add for check vbus leakage*/
 static bool vbus_leakage_check_status = false;
-static void oppo_vbus_leakage_check_work()
+static void oppo_vbus_leakage_check_work(void)
 {
 	int rc = 0;
 	struct oppo_chg_chip *chip = g_oppo_chip;

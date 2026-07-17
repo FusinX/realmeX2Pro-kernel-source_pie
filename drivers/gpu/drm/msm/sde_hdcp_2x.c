@@ -418,21 +418,15 @@ static void sde_hdcp_2x_cleanup_work(struct kthread_work *work)
 static u8 sde_hdcp_2x_stream_type(u8 min_enc_level)
 {
 	u8 stream_type = 0;
-	u8 const hdcp_min_enc_level_0 = 0, hdcp_min_enc_level_1 = 1,
-	   hdcp_min_enc_level_2 = 2;
-	u8 const stream_type_0 = 0, stream_type_1 = 1;
 
-	switch (min_enc_level) {
-	case hdcp_min_enc_level_0:
-	case hdcp_min_enc_level_1:
-		stream_type = stream_type_0;
-		break;
-	case hdcp_min_enc_level_2:
-		stream_type = stream_type_1;
-		break;
-	default:
-		stream_type = stream_type_0;
-		break;
+	/* HDCP min encryption level to stream type mapping:
+	 * level 0 or 1 -> type 0
+	 * level 2 -> type 1
+	 */
+	if (min_enc_level >= 2) {
+		stream_type = 1;
+	} else {
+		stream_type = 0;
 	}
 
 	pr_debug("min_enc_level = %u, type = %u", min_enc_level, stream_type);

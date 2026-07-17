@@ -18,6 +18,8 @@
 #include "gsi_reg.h"
 #include "gsi.h"
 
+#define copy_from_user(dest, src, count) __copy_from_user(dest, src, count)
+
 #define TERR(fmt, args...) \
 		pr_err("%s:%d " fmt, __func__, __LINE__, ## args)
 #define TDBG(fmt, args...) \

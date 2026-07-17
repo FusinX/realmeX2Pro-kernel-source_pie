@@ -115,9 +115,10 @@ static ssize_t  qrtr_svc_debugfs_read(struct file *file, char __user *user_buf,
 	struct list_head *pos;
 	struct qrtr_svc *svc_id_loopup = NULL;
 	int count = 0;
+	int index;
 
 	count += snprintf(buf+count, PAGE_SIZE-count, "\n\tnode    port    svc_id    key\n");
-	for(int index = 0; index < HASH_SIZE; index++){
+	for(index = 0; index < HASH_SIZE; index++){
 		list_for_each(pos, &hash_array[index])
 		{
 			svc_id_loopup = list_entry(pos, struct qrtr_svc, lst);
@@ -162,7 +163,8 @@ static void  qrtr_svc_debugfs_init(void){
 
 void qrtr_svc_init(void)
 {
-	for(int i = 0; i < HASH_SIZE; i++)
+	int i;
+	for(i = 0; i < HASH_SIZE; i++)
 		INIT_LIST_HEAD(&hash_array[i]);
 	qrtr_svc_debugfs_init();
 }
@@ -171,7 +173,8 @@ void qrtr_svc_deinit(void)
 {
 	struct list_head *pos;
 	struct qrtr_svc *svc_id_loopup = NULL;
-	for(int index = 0; index < HASH_SIZE; index++){
+	int index;
+	for(index = 0; index < HASH_SIZE; index++){
 		list_for_each(pos, &hash_array[index]){
 			svc_id_loopup = list_entry(pos, struct qrtr_svc, lst);
 			if(svc_id_loopup != NULL){

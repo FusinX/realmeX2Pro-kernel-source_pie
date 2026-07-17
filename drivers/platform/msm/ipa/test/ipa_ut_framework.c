@@ -20,6 +20,7 @@
 #include "ipa_ut_suite_list.h"
 #include "ipa_ut_i.h"
 
+#define copy_from_user(dest, src, count) __copy_from_user(dest, src, count)
 
 #define IPA_UT_DEBUG_WRITE_BUF_SIZE 256
 #define IPA_UT_DEBUG_READ_BUF_SIZE 1024

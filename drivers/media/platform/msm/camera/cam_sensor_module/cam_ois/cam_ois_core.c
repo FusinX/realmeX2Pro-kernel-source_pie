@@ -92,6 +92,7 @@ struct cam_sensor_i2c_reg_setting_array bu63169_gyroOff_settings = {
 static int RamWriteByte(struct cam_ois_ctrl_t *o_ctrl,
 	uint32_t addr, uint32_t data, unsigned short mdelay)
 {
+	int i;
 	int32_t rc = 0;
 	int retry = 3;
 	struct cam_sensor_i2c_reg_array i2c_write_setting = {
@@ -112,7 +113,7 @@ static int RamWriteByte(struct cam_ois_ctrl_t *o_ctrl,
 		return -EINVAL;
 	}
 
-	for(int i = 0; i < retry; i++)
+	for(i = 0; i < retry; i++)
 	{
 		rc = camera_io_dev_write(&(o_ctrl->io_master_info), &i2c_write);
 		if (rc < 0) {
@@ -127,6 +128,7 @@ static int RamWriteByte(struct cam_ois_ctrl_t *o_ctrl,
 static int RamWriteWord(struct cam_ois_ctrl_t *o_ctrl,
 	uint32_t addr, uint32_t data)
 {
+	int i;
 	int32_t rc = 0;
 	int retry = 3;
 	struct cam_sensor_i2c_reg_array i2c_write_setting = {
@@ -151,7 +153,7 @@ static int RamWriteWord(struct cam_ois_ctrl_t *o_ctrl,
 		return -EINVAL;
 	}
 
-	for(int i = 0; i < retry; i++)
+	for(i = 0; i < retry; i++)
 	{
 		rc = camera_io_dev_write(&(o_ctrl->io_master_info), &i2c_write);
 		if (rc < 0) {
@@ -165,8 +167,9 @@ static int RamWriteWord(struct cam_ois_ctrl_t *o_ctrl,
 
 static int RamMultiWrite(struct cam_ois_ctrl_t *o_ctrl,
 	struct cam_sensor_i2c_reg_setting *write_setting) {
+	int i;
 	int rc = 0;
-	for (int i = 0; i < write_setting->size; i++) {
+	for (i = 0; i < write_setting->size; i++) {
 		rc = RamWriteWord(o_ctrl, write_setting->reg_setting[i].reg_addr,
 			write_setting->reg_setting[i].reg_data);
 	}
@@ -533,6 +536,7 @@ static int getPcbVersion(char *pcbVersion)
 
 static int cam_sem1815s_ois_fw_download(struct cam_ois_ctrl_t *o_ctrl)
 {
+	int i;
 	uint16_t                           total_bytes = 0;
 	uint8_t                            *ptr = NULL;
 	int32_t                            rc = 0, cnt;
@@ -665,7 +669,7 @@ static int cam_sem1815s_ois_fw_download(struct cam_ois_ctrl_t *o_ctrl)
 
 	for (cnt = 0, ptr = (uint8_t *)fw->data; cnt < total_bytes;) {
 		i2c_reg_setting.size = 0;
-		for (int i = 0; (i < MAX_LENGTH && cnt < total_bytes); i++,ptr++) {
+		for (i = 0; (i < MAX_LENGTH && cnt < total_bytes); i++,ptr++) {
 			if (cnt >= VERSION_OFFSET && cnt < (VERSION_OFFSET + 4)) {
 				fw_ver[cnt-VERSION_OFFSET] = *ptr;
 				CAM_ERR(CAM_OIS, "get fw version:0x%0x", fw_ver[cnt-VERSION_OFFSET]);
@@ -739,6 +743,7 @@ release_firmware:
 
 static int cam_ois_fw_download(struct cam_ois_ctrl_t *o_ctrl)
 {
+	int i;
 	uint16_t                           total_bytes = 0;
 	uint8_t                           *ptr = NULL;
 	int32_t                            rc = 0, cnt;
@@ -823,7 +828,7 @@ static int cam_ois_fw_download(struct cam_ois_ctrl_t *o_ctrl)
 	#else
 	for (cnt = 0, ptr = (uint8_t *)fw->data; cnt < total_bytes;) {
 		i2c_reg_setting.size = 0;
-		for (int i = 0; (i < MAX_LENGTH_MAIN && cnt < total_bytes); i++,ptr++) {
+		for (i = 0; (i < MAX_LENGTH_MAIN && cnt < total_bytes); i++,ptr++) {
 			i2c_reg_setting.reg_setting[i].reg_addr =
 				o_ctrl->opcode.prog;
 			i2c_reg_setting.reg_setting[i].reg_data = *ptr;
@@ -889,7 +894,7 @@ static int cam_ois_fw_download(struct cam_ois_ctrl_t *o_ctrl)
 	#else
 	for (cnt = 0, ptr = (uint8_t *)fw->data; cnt < total_bytes;) {
 		i2c_reg_setting.size = 0;
-		for (int i = 0; (i < MAX_LENGTH_MAIN && cnt < total_bytes); i++,ptr++) {
+		for (i = 0; (i < MAX_LENGTH_MAIN && cnt < total_bytes); i++,ptr++) {
 			i2c_reg_setting.reg_setting[i].reg_addr =
 				o_ctrl->opcode.coeff;
 			i2c_reg_setting.reg_setting[i].reg_data = *ptr;
@@ -950,6 +955,7 @@ static int cam_ois_read_gyrodata(struct cam_ois_ctrl_t *o_ctrl, uint32_t gyro_x_
 /*add by hongbo.dai@camera 20190117, for Tele OIS GyroOffset*/
 static int cam_ois_sem1215s_calibration(struct cam_ois_ctrl_t *o_ctrl)
 {
+	int i;
 	int32_t                            rc = 0;
 	uint32_t                           data;
 	uint32_t                           calib_data = 0x0;
@@ -980,7 +986,7 @@ static int cam_ois_sem1215s_calibration(struct cam_ois_ctrl_t *o_ctrl)
 	}
 
 	RamWriteByte(o_ctrl, 0x0600, 0x1, 100);
-	for (int i = 0; i < 5; i++) {
+	for (i = 0; i < 5; i++) {
 		rc = camera_io_dev_read(&(o_ctrl->io_master_info), 0x0600, &data,
 			CAMERA_SENSOR_I2C_TYPE_WORD, CAMERA_SENSOR_I2C_TYPE_BYTE);
 		if (data == 0x00) {
@@ -1010,7 +1016,7 @@ static int cam_ois_sem1215s_calibration(struct cam_ois_ctrl_t *o_ctrl)
 	if ((calib_data & (0x0100 | 0x0200)) == 0x0000)
 	{
 		RamWriteByte(o_ctrl, 0x300, 0x1, 100);
-		for (int i = 0; i < 5; i++) {
+		for (i = 0; i < 5; i++) {
 			rc = camera_io_dev_read(&(o_ctrl->io_master_info), 0x0300, &data,
 				CAMERA_SENSOR_I2C_TYPE_WORD, CAMERA_SENSOR_I2C_TYPE_BYTE);
 			if (data == 0x00) {

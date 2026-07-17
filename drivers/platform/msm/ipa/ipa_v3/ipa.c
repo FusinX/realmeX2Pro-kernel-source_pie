@@ -42,6 +42,8 @@
 #include <linux/soc/qcom/smem_state.h>
 #include <linux/of_irq.h>
 
+#define copy_from_user(dest, src, count) __copy_from_user(dest, src, count)
+
 #ifdef CONFIG_ARM64
 
 /* Outer caches unsupported on ARM64 platforms */
